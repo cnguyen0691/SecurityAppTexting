@@ -68,8 +68,7 @@ public class HomeController {
         model.addAttribute("myuser", myuser);
         return "secure";
     }
-
-
+    
     @RequestMapping("/")
     public String listMessage(Model model){
         model.addAttribute("messages", messageRepository.findAll());
