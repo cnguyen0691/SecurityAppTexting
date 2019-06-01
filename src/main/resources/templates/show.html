@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Show</title>
@@ -12,28 +13,60 @@
 <nav th:replace="base :: nav"></nav>
 <!--Content-->
 <div class="container">
-    <div class="row">
-
-        <div class="col">
-            <h3 style="text-align: left;font-size: 18px;
-            color: blue;" th:text="${message.title}"></h3>
-        </div>
-        <div class="col">
-            <p th:text="${message.content}"></p>
-        </div>
-        <div class="col">
-            <img th:alt="Image" th:src="${message.image}" width="50px" height="50px"/>
-        </div>
-        <div class="col">
-            <p>Post Date: <span th:text="${message.postedDate}"></span><br/>
-                Post By: <span th:text="${message.postedBy}"></span></p>
-        </div>
-        <div class="col">
-            <a th:href="@{/update/{id}(id=${message.id})}">Edit</a>
-            <a th:href="@{/delete/{id}(id=${message.id})}">Delete </a>
-        </div>
+    <div>
+        <h2 >All Messages</h2>
     </div>
+    <table class="table">
+
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Message</th>
+            <th scope="col">PostedDate</th>
+            <th scope="col">PostedBy</th>
+            <th scope="col">Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <div>
+                <h3 style="text-align: left;font-size: 18px;
+            color: blue;" th:text="${message.title}"></h3>
+                </div>
+            </td>
+            <td >
+                <div>
+                    <p th:text="${message.content}"></p>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <p><span th:text="${message.postedDate}"></span></p>
+                </div>
+            </td>
+            <td >
+                <div>
+                <p> <span th:text="${message.postedBy}"></span></p>
+                </div>
+            </td>
+            <td><div> <img th:alt="Image" th:src="${message.image}" width="50px" height="50px"/></div></td>
+            <td >
+                <div sec:authorize="!isAuthenticated()" >
+                <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Edit</a>
+                </div>
+            </td>
+            <td>
+                <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-secondary">Delete </a>
+                </div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
 </div>
+
 
 <!--Footer-->
 <footer th:replace="base :: footer"></footer>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -35,18 +36,16 @@
             <td ><img class="icon" th:src="*{image}" alt="Picture" width="50px" height="50px"/></td>
             <td>
                 <div >
-                    <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Update</a>
+
                     <a th:href="@{/detail/{id}(id=${message.id})}" class="btn btn-outline-secondary">Details</a>
-                    <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-danger">Delete</a>
+
                 </div>
             </td>
-        </tr>
+
 
         </tbody>
     </table>
-    <div>
-        <a href="/add" class="btn btn-outline-primary btn-sm"> Add A Message</a>
-    </div>
+
 </div>
 <!--Footer-->
 <footer th:replace="base :: footer"></footer>

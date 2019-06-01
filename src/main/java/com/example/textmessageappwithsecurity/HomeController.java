@@ -33,6 +33,12 @@ public class HomeController {
     @Autowired
     UserService userService;
 
+    @RequestMapping("/admin")
+    public String admin(Model model){
+        model.addAttribute("users", userRepository.findAll());
+        return "admin";
+    }
+
     @GetMapping("/register")
     public String showRegistration(Model model) {
         model.addAttribute("user", new User());
@@ -74,12 +80,14 @@ public class HomeController {
         model.addAttribute("messages", messageRepository.findAll());
         if(userService.getUser() != null){
             model.addAttribute("user_id", userService.getUser().getId());
+            model.addAttribute("user", userService.getUser());
         }
         return "list";
     }
 
     @GetMapping("/add")
-    public String addMessage(Model model){
+    public String addMessage(Principal principal, Model model){
+        model.addAttribute("user", userService.getUser());
         model.addAttribute("message", new Message());
         return "addMessage";
 
@@ -87,12 +95,14 @@ public class HomeController {
     @PostMapping("/process")
     public String processMessage (@Valid @ModelAttribute("message") Message message,
                                   BindingResult result,
-                                  @RequestParam("file") MultipartFile file) {
+                                  @RequestParam("file") MultipartFile file,
+                                  Model model) {
         System.out.println("object =" + message);
         if (result.hasErrors()) {
             for (ObjectError e : result.getAllErrors()) {
                 System.out.println(e);
             }
+            model.addAttribute("user", userService.getUser());
             return "addMessage";
         }
         //if there is a picture path and file is empty then save message
@@ -101,6 +111,7 @@ public class HomeController {
             return "redirect:/";
         }
         if( file.isEmpty()){
+            model.addAttribute("user", userService.getUser());
             return "addMessage";
         }
         Map uploadResult;
@@ -113,21 +124,30 @@ public class HomeController {
         }
         String url = uploadResult.get("url").toString();
         message.setImage(url);
+        message.setUser(userService.getUser());
         messageRepository.save(message);
         return "redirect:/";
-    }
-
-    @RequestMapping("/update/{id}")
-    public String updateMessage(@PathVariable("id") long id, Model model) {
-        model.addAttribute("message", messageRepository.findById(id).get());
-        return "addMessage";
     }
 
     @RequestMapping("/detail/{id}")
     public String detailMessage(@PathVariable("id") long id, Model model) {
         model.addAttribute("message", messageRepository.findById(id).get());
+        if(userService.getUser() != null){
+            model.addAttribute("user_id", userService.getUser().getId());
+            model.addAttribute("user", userService.getUser());
+        }
         return "show";
     }
+
+    @RequestMapping("/update/{id}")
+    public String updateMessage(@PathVariable("id") long id, Model model) {
+        model.addAttribute("message", messageRepository.findById(id).get());
+        if (userService.getUser() !=null){
+            model.addAttribute("user", userService.getUser());
+        }
+        return "addMessage";
+    }
+
 
     @RequestMapping("/delete/{id}")
     public String delMessage(@PathVariable("id") long id) {
@@ -140,6 +160,16 @@ public class HomeController {
         model.addAttribute("messages", messageRepository.findAll());
         return "about";
     }
+//    @RequestMapping("/secure")
+//    public String secure(Model model) {
+//        User myuser = userService.getUser();
+//        model.addAttribute("myuser", myuser);
+//        return "secure";
+//    }
 
+    @RequestMapping("/term")
+    public String term (){
+        return "term";
+    }
 }
 
