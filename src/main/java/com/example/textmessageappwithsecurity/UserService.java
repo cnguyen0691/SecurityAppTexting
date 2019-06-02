@@ -3,6 +3,7 @@ package com.example.textmessageappwithsecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -16,20 +17,19 @@ public class UserService {
     RoleRepository roleRepository;
 
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
+    @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
-    public User findByEmail(String email){
-        return userRepository.findByEmail(email);
-    }
 
-    public Long countByEmail(String email){
-        return userRepository.countByEmail(email);
-    }
-
-    public User findByUsername(String username){
-        return userRepository.findByUsername(username);
+    public void saveUser(User user, String role) {
+        user.setRoles(Arrays.asList(roleRepository.findByRole(role)));
+        user.setEnable(true);
+        userRepository.save(user);
     }
 
     public void saveUser(User user){
@@ -50,5 +50,10 @@ public class UserService {
         String currentUserName = authentication.getName();
         User user = userRepository.findByUsername(currentUserName);
         return user;
+    }
+
+    public String encode(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
     }
 }

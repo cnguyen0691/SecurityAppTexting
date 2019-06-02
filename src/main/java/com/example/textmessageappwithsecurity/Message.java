@@ -29,12 +29,14 @@ public class Message {
 
     private String image;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
 
 
-    public Message() {postedDate = LocalDate.now();
+    public Message() {
+        postedDate = LocalDate.now();
+        user = new User();
     }
 
 

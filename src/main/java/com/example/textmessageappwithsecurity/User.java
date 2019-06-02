@@ -1,5 +1,7 @@
 package com.example.textmessageappwithsecurity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -7,6 +9,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -44,10 +47,16 @@ public class User {
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private Collection<Role> roles;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.REMOVE)
+
+//    @Fetch(value = FetchMode.SUBSELECT)
+    private Set<Message> messages;
+
+
     public User() {
     }
 
-    public User(@NotEmpty @Email String email, @NotEmpty String password, @NotEmpty String firstName, @NotEmpty String lastName, @AssertTrue boolean enable, @NotEmpty String username) {
+    public User(@NotEmpty @Email String email, @NotEmpty String password, @NotEmpty String firstName, @NotEmpty String lastName, boolean enable, @NotEmpty String username) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -119,8 +128,17 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
     public void encode(String password){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
 }

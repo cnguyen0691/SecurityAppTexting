@@ -25,13 +25,15 @@
             <th scope="col">PostedDate</th>
             <th scope="col">PostedBy</th>
             <th scope="col">Image</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>
                 <div>
-                <h3 style="text-align: left;font-size: 18px;
+                    <h3 style="text-align: left;font-size: 18px;
             color: blue;" th:text="${message.title}"></h3>
                 </div>
             </td>
@@ -47,18 +49,18 @@
             </td>
             <td >
                 <div>
-                <p> <span th:text="${message.postedBy}"></span></p>
+                    <p> <span th:text="${message.postedBy}"></span></p>
                 </div>
             </td>
             <td><div> <img th:alt="Image" th:src="${message.image}" width="50px" height="50px"/></div></td>
             <td >
-                <div sec:authorize="!isAuthenticated()" >
-                <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Edit</a>
+                <div  >
+                    <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Edit</a>
                 </div>
             </td>
             <td>
-                <div sec:authorize="!isAuthenticated()">
-                <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-secondary">Delete </a>
+                <div >
+                    <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-secondary">Delete </a>
                 </div>
             </td>
         </tr>

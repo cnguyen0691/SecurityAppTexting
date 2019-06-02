@@ -42,13 +42,13 @@
             </div><br/>
             <!--image-->
             <div id="image">
-                <h4>File</h4>
+                <h4>File</h4><br/>
                 <input name="file" type="file"/>
-                <p th:if="*{image} != null">
-                <td><input th:field="*{image}" type ="hidden"></td>
-                <td><img class="profile-picture"  th:alt="Picture"  th:src="*{image}" /><br/></td>
-                <td><span th:errors="*{image}" th:if="${#fields.hasErrors('image')}"></span></td>
-                </p>
+<!--                <p th:if="*{image} != null">-->
+<!--                <td><input th:field="*{image}"></td>-->
+<!--                <td><img class="profile-picture"  th:alt="Picture"  th:src="*{image}" /><br/></td>-->
+<!--                <td><span th:errors="*{image}" th:if="${#fields.hasErrors('image')}"></span></td>-->
+<!--                </p>-->
             </div><br/>
 
             <input class="btn btn-primary btn-md" type="submit" value="Submit"/>
