@@ -159,10 +159,10 @@ public class HomeController {
             messageRepository.save(message);
         }catch (IOException e){
             e.printStackTrace();
-            return "redirect:/";
+            return "redirect:/list";
         }
         model.addAttribute("message", message);
-        return "redirect:/";
+        return "redirect:/list";
     }
 
 
@@ -170,8 +170,7 @@ public class HomeController {
     @RequestMapping("/detail/{id}")
     public String detailMessage(@PathVariable("id") long id, Model model) {
         model.addAttribute("message", messageRepository.findById(id).get());
-            model.addAttribute("user_id", userService.getUser());
-            model.addAttribute("user", userRepository.findAll());
+            model.addAttribute("user", userService.getUser());
 
         return "show";
     }
@@ -179,8 +178,8 @@ public class HomeController {
     @RequestMapping("/update/{id}")
     public String updateMessage(@PathVariable("id") long id, Model model) {
         model.addAttribute("message", messageRepository.findById(id).get());
-        model.addAttribute("user_id", userService.getUser());
-        model.addAttribute("user", userRepository.findAll());
+        model.addAttribute("user", userService.getUser());
+
 
         return "addMessage";
     }

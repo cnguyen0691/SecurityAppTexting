@@ -54,12 +54,12 @@
             </td>
             <td><div> <img th:alt="Image" th:src="${message.image}" width="50px" height="50px"/></div></td>
             <td >
-                <div  >
+                <div th:if="${message.getUser().getId() == user.getId()}" >
                     <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Edit</a>
                 </div>
             </td>
             <td>
-                <div >
+                <div th:if="${message.getUser().getId() == user.getId()}">
                     <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-secondary">Delete </a>
                 </div>
             </td>
