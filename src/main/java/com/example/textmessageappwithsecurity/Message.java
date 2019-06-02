@@ -29,8 +29,7 @@ public class Message {
 
     private String image;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
 
@@ -44,12 +43,14 @@ public class Message {
                    @NotNull @Size(min = 1) String content,
                    LocalDate postedDate,
                    @NotNull String postedBy,
-                   String image) {
+                   String image,
+                   User user) {
         this.title = title;
         this.content = content;
         this.postedDate = postedDate;
         this.postedBy = postedBy;
         this.image = image;
+        this.user=user;
     }
 
 
