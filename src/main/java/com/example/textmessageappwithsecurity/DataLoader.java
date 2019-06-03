@@ -26,6 +26,12 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run (String... strings) throws Exception{
+        roleRepository.save(new Role("USER"));
+        roleRepository.save(new Role("ADMIN"));
+
+        Role adminRole = roleRepository.findByRole("ADMIN");
+        Role userRole = roleRepository.findByRole("USER");
+
         User chau = new User ("chaunguyen0691@gmail.com", "123", "Chau", "Nguyen", true, "chau" );
         chau.setPassword(userService.encode(chau.getPassword()));
         userService.saveUser(chau);
@@ -35,10 +41,10 @@ public class DataLoader implements CommandLineRunner {
         userService.saveAdmin(admin);
 
         Message message = new Message("Portfolio","App text message project using  " +
-                "Java, Spring Boot, Cloudinary, HTML, CSS, Bootstrap Framework and Heroku",
+                "Java, Spring MVC,  Spring Boot, Entity Relationship, Cloudinary, HTML, CSS, Bootstrap Framework and Heroku",
                 LocalDate.now(),
                 "Chau Nguyen",
-                "https://res.cloudinary.com/ho-chi-minh-city/image/upload/v1558617709/shmq4ofenblveteiapit.jpg", chau);
+                "https://res.cloudinary.com/ho-chi-minh-city/image/upload/v1558617709/shmq4ofenblveteiapit.jpg", admin);
 
         messageRepository.save(message);
 

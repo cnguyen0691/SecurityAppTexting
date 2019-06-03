@@ -25,8 +25,7 @@
             <th scope="col">PostedDate</th>
             <th scope="col">PostedBy</th>
             <th scope="col">Image</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+
         </tr>
         </thead>
         <tbody>
@@ -54,13 +53,28 @@
             </td>
             <td><div> <img th:alt="Image" th:src="${message.image}" width="50px" height="50px"/></div></td>
             <td >
-                <div th:if="${message.getUser().getId() == user.getId()}" >
+                <div sec:authorize="hasAnyAuthority('USER')" >
+                    <span th:if="${message.getUser().getId() == user.getId()}">
                     <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Edit</a>
+                    </span>
                 </div>
+                <div sec:authorize="hasAnyAuthority('USER')">
+                <span th:if="${message.getUser().getId() == user.getId()}">
+                    <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-secondary">Delete </a>
+                </span>
+                </div>
+
             </td>
             <td>
-                <div th:if="${message.getUser().getId() == user.getId()}">
+                <div sec:authorize="hasAnyAuthority('ADMIN')" >
+                    <span >
+                    <a th:href="@{/update/{id}(id=${message.id})}" class="btn btn-outline-secondary">Edit</a>
+                    </span>
+                </div>
+                <div sec:authorize="hasAnyAuthority('ADMIN')">
+                <span>
                     <a th:href="@{/delete/{id}(id=${message.id})}" class="btn btn-outline-secondary">Delete </a>
+                </span>
                 </div>
             </td>
         </tr>
