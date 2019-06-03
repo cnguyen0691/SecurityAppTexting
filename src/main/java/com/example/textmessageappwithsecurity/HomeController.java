@@ -11,9 +11,11 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Map;
 
 
@@ -206,6 +208,33 @@ public class HomeController {
     @RequestMapping("/term")
     public String term (){
         return "term";
+    }
+
+    @PostConstruct
+    public void filltables(){
+        roleRepository.save(new Role("USER"));
+        roleRepository.save(new Role("ADMIN"));
+
+        Role adminRole = roleRepository.findByRole("ADMIN");
+        Role userRole = roleRepository.findByRole("USER");
+
+        User chau = new User ("chaunguyen0691@gmail.com", "123", "Chau", "Nguyen", true, "chau" );
+        chau.setPassword(userService.encode(chau.getPassword()));
+        userService.saveUser(chau);
+
+        User admin = new User("admin@admin.com", "password", "Admin", "User", true, "admin");
+        admin.setPassword(userService.encode(admin.getPassword()));
+        userService.saveAdmin(admin);
+
+        Message message = new Message("Portfolio","App text message project using  " +
+                "Java, Spring MVC,  Spring Boot, Entity Relationship, Cloudinary, HTML, CSS, Bootstrap Framework and Heroku",
+                LocalDate.now(),
+                "Chau Nguyen",
+                "https://res.cloudinary.com/ho-chi-minh-city/image/upload/v1558617709/shmq4ofenblveteiapit.jpg", admin);
+
+        messageRepository.save(message);
+
+
     }
 }
 
