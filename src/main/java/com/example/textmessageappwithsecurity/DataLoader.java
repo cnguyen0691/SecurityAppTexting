@@ -23,7 +23,6 @@ public class DataLoader implements CommandLineRunner {
     RoleRepository roleRepository;
 
 
-
     @Override
     public void run (String... strings) throws Exception{
         roleRepository.save(new Role("USER"));
